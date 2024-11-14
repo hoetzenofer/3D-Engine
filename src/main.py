@@ -1,8 +1,12 @@
 import pygame as pg
 import math
 import os
+import json
 
 pg.init()
+
+with open("config.json", "r") as file:
+    jdata = json.load(file)
 
 def load_obj(filename):
     vertices = []
@@ -28,14 +32,14 @@ WIDTH, HEIGHT = 800, 600
 screen = pg.display.set_mode((WIDTH, HEIGHT))
 pg.display.set_caption("3D Engine with Pygame :)")
 
-size_multiplier = 1.5
-rotation_speed = 0.05
+SIZE_MULTIPLIER = jdata["size-multiplier"]
+ROTATION_SPEED = jdata["rotation-speed"]
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
-vertices, edges = load_obj("cube.obj")
-vertices = [[coord * size_multiplier for coord in vertex] for vertex in vertices]
+vertices, edges = load_obj(jdata["object"])
+vertices = [[coord * SIZE_MULTIPLIER for coord in vertex] for vertex in vertices]
 
 def rotate_x(vertex, angle):
     x, y, z = vertex
@@ -69,13 +73,13 @@ while running:
     # check for held down keys
     keys = pg.key.get_pressed()
     if keys[pg.K_a]:
-        angle_y += rotation_speed
+        angle_y += ROTATION_SPEED
     if keys[pg.K_d]:
-        angle_y -= rotation_speed
+        angle_y -= ROTATION_SPEED
     if keys[pg.K_w]:
-        angle_x += rotation_speed
+        angle_x += ROTATION_SPEED
     if keys[pg.K_s]:
-        angle_x -= rotation_speed
+        angle_x -= ROTATION_SPEED
 
     screen.fill(BLACK)
 
