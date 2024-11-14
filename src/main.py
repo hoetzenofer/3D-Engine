@@ -92,7 +92,6 @@ while running:
     if keys[pg.K_RIGHT]:
         angle_z -= ROTATION_SPEED
 
-
     screen.fill(BLACK)
 
     rotated_vertices = []
@@ -100,9 +99,8 @@ while running:
     for vertex in vertices:
         rotated_vertex = rotate_y(vertex, angle_y)
         rotated_vertex = rotate_x(rotated_vertex, angle_x)
-        rotated_vertex = rotate_z(rotated_vertex, angle_z)  # Add this line
+        rotated_vertex = rotate_z(rotated_vertex, angle_z)
         rotated_vertices.append(rotated_vertex)
-
 
     projected_vertices = [project(v) for v in rotated_vertices]
 
