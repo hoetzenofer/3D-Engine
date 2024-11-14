@@ -53,6 +53,12 @@ def rotate_y(vertex, angle):
     sin_angle = math.sin(angle)
     return [x * cos_angle + z * sin_angle, y, -x * sin_angle + z * cos_angle]
 
+def rotate_z(vertex, angle):
+    x, y, z = vertex
+    cos_angle = math.cos(angle)
+    sin_angle = math.sin(angle)
+    return [x * cos_angle - y * sin_angle, x * sin_angle + y * cos_angle, z]
+
 def project(vertex):
     x, y, z = vertex
     factor = 200 / (z + 5)
@@ -64,6 +70,7 @@ running = True
 clock = pg.time.Clock()
 angle_x = 0
 angle_y = 0
+angle_z = 0
 
 while running:
     for event in pg.event.get():
@@ -80,14 +87,22 @@ while running:
         angle_x += ROTATION_SPEED
     if keys[pg.K_s]:
         angle_x -= ROTATION_SPEED
+    if keys[pg.K_LEFT]:
+        angle_z += ROTATION_SPEED
+    if keys[pg.K_RIGHT]:
+        angle_z -= ROTATION_SPEED
+
 
     screen.fill(BLACK)
 
     rotated_vertices = []
 
     for vertex in vertices:
-        rotated_vertex = rotate_y(rotate_x(vertex, angle_x), angle_y)
+        rotated_vertex = rotate_y(vertex, angle_y)
+        rotated_vertex = rotate_x(rotated_vertex, angle_x)
+        rotated_vertex = rotate_z(rotated_vertex, angle_z)  # Add this line
         rotated_vertices.append(rotated_vertex)
+
 
     projected_vertices = [project(v) for v in rotated_vertices]
 
